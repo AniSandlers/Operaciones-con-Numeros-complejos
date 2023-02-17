@@ -1,0 +1,79 @@
+% Primero que nada, aquí pregunto si la operación es en forma rectangular o
+% polar. Por el momento es la limitante: una u otra, no entre ambas.
+form = 3;
+%"Si el usuario es distraido y pone algo que no sea 1 y 2" le preguntará una vez
+%más.
+while form~=1 && form~=2
+    fprintf('\n');
+    fprintf('Selecciona aquí la forma de los números complejos:\n');
+    fprintf('1. Forma rectangular (a + bi)\n');
+    fprintf('2. Forma polar (r * exp(i * theta))\n');
+    form = input('Ingrese su selección: ');
+end
+% Pedir al usuario que ingrese los dos números complejos
+fprintf('Ingrese el primer número complejo:\n');
+if form == 1
+    a = input('Ingrese la parte real, a: ');
+    b = input('Ingrese la parte imaginaria, b: ');
+elseif form == 2
+    r = input('Ingrese la magnitud, r: ');
+    theta = input('Ingrese el ángulo en grados, theta: ');
+    %Aquí tengo que convertir de grados a radianes ya que Matlab trabaja
+    %con radianes, por eso el deg2rad
+    theta = deg2rad(theta);
+    a = r * cos(theta);
+    b = r * sin(theta);
+else
+    %si el usuario hace algo que no, pues da error
+    error('Forma no válida')
+end
+z1 = complex(a, b);
+
+fprintf('Ingrese el segundo número complejo:\n');
+if form == 1
+    a = input('Ingrese la parte real, a: ');
+    b = input('Ingrese la parte imaginaria, b: ');
+elseif form == 2
+    r = input('Ingrese la magnitud, r: ');
+    theta = input('Ingrese el ángulo en grados, theta: ');
+    %lo mismo de arriba. deg2rad
+    theta = deg2rad(theta);
+    a = r * cos(theta);
+    b = r * sin(theta);
+else
+    error('Forma no válida')
+end
+z2 = complex(a, b);
+
+% Pedir al usuario que ingrese la operación a realizar
+op = input('Ingrese la operación a realizar (+, -, *, /): ','s');
+
+% Realizar la operación seleccionada
+switch op
+    case '+'
+        z3 = z1 + z2;
+    case '-'
+        z3 = z1 - z2;
+    case '*'
+        z3 = z1 * z2;
+    case '/'
+        if real(z2) == 0 && imag(z2) == 0
+            error('No se puede dividir por cero')
+        else
+            z3 = z1 / z2;
+        end
+    otherwise
+        %si el usuario poneuna operacion que no es alguna de arriba, le da
+        %error.
+        error('Operación no válida')
+end
+
+% Mostrar el resultado en coordenadas cartesianas y polares
+fprintf('El resultado de la operación es:\n');
+fprintf('En coordenadas cartesianas: %f + %fi\n', real(z3), imag(z3));
+%fprintf('En coordenadas polares: Magnitud = %f, Ángulo = %f radianes\n', abs(z3), angle(z3));
+%algo importante, el resultado lo quiero en grados, por lo tanto, como
+%anteriomente le pedí a matlab que convierta grados a radianes, debo aqu
+%hacer lo contrario y ahora pasar de radianes a grados con rad2deg
+fprintf('En coordenadas polares: Magnitud = %f, Ángulo = %f \n', abs(z3), rad2deg(angle(z3)));
+%By: Luna Akefu
